@@ -50,7 +50,7 @@ endif
 CONTROLLER_GEN := $(abspath $(TOOLS_BIN_DIR)/controller-gen)
 CONVERSION_GEN := $(abspath $(TOOLS_BIN_DIR)/conversion-gen)
 GOTESTSUM := $(abspath $(TOOLS_BIN_DIR)/gotestsum)
-KUSTOMIZE := $(abspath $(TOOLS_BIN_DIR)/kustomize)
+KUSTOMIZE ?= $(abspath $(TOOLS_BIN_DIR)/kustomize)
 
 $(KUSTOMIZE): # Build kustomize from tools folder.
 	$(MAKE) -C $(ROOT) kustomize
@@ -224,6 +224,16 @@ ifeq ($(shell uname -s), Darwin)
 else
 	sed -i -e 's@imagePullPolicy: .*@imagePullPolicy: '"$(PULL_POLICY)"'@' ./config/default/manager_pull_policy.yaml
 endif
+
+## --------------------------------------
+## Deployment
+## --------------------------------------
+
+set_controller_image:
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${CONTROLLER_IMG}
+
+create-infrastructure-components: generate-manifests $(KUSTOMIZE) set_controller_image
+	$(KUSTOMIZE) build config/default > infrastructure-components.yaml
 
 ## --------------------------------------
 ## Cleanup / Verification
