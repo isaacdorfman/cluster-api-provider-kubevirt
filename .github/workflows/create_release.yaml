@@ -18,7 +18,7 @@ jobs:
           go-version: '1.16.6'
       - name: Create infrastructure components
         run: |
-          make create_infrastructure-components
+          make create-infrastructure-components
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
