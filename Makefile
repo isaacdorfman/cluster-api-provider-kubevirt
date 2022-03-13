@@ -53,6 +53,7 @@ GOTESTSUM := $(abspath $(TOOLS_BIN_DIR)/gotestsum)
 KUSTOMIZE ?= $(abspath $(TOOLS_BIN_DIR)/kustomize)
 
 $(KUSTOMIZE): # Build kustomize from tools folder.
+	whoami
 	echo $(ROOT)
 	go install sigs.k8s.io/cluster-api@v0.3.11-0.20210525210043-6c7878e7b4a9
 	ls "$(ROOT)"
