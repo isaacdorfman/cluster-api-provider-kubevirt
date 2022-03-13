@@ -15,7 +15,7 @@
 # If you update this file, please follow:
 # https://suva.sh/posts/well-documented-makefiles/
 
-ROOT = $$GOPATH/pkg/mod/sigs.k8s.io/cluster-api@v0.3.11-0.20210525210043-6c7878e7b4a9
+ROOT = $(go env GOPATH)/pkg/mod/sigs.k8s.io/cluster-api@v0.3.11-0.20210525210043-6c7878e7b4a9
 
 .DEFAULT_GOAL:=help
 TARGET ?= target
@@ -55,7 +55,6 @@ KUSTOMIZE ?= $(abspath $(TOOLS_BIN_DIR)/kustomize)
 $(KUSTOMIZE): # Build kustomize from tools folder.
 	echo $(ROOT)
 	go install sigs.k8s.io/cluster-api@v0.3.11-0.20210525210043-6c7878e7b4a9
-	find / -name cluster-api
 	ls "$(ROOT)"
 	$(MAKE) -C "$(ROOT)" kustomize
 
