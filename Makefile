@@ -50,14 +50,7 @@ endif
 CONTROLLER_GEN := $(abspath $(TOOLS_BIN_DIR)/controller-gen)
 CONVERSION_GEN := $(abspath $(TOOLS_BIN_DIR)/conversion-gen)
 GOTESTSUM := $(abspath $(TOOLS_BIN_DIR)/gotestsum)
-KUSTOMIZE ?= $(abspath $(TOOLS_BIN_DIR)/kustomize)
-
-$(KUSTOMIZE): # Build kustomize from tools folder.
-	go install sigs.k8s.io/cluster-api@v0.3.11-0.20210525210043-6c7878e7b4a9
-	chmod 777 -R $(ROOT)
-	$(MAKE) -C "$(ROOT)" kustomize
-
-kustomize: $(KUSTOMIZE)
+KUSTOMIZE ?= docker run k8s.gcr.io/kustomize/kustomize:v3.8.7
 
 # Define Docker related variables. Releases should modify and double check these vars.
 REGISTRY ?= localhost:5000
@@ -71,6 +64,8 @@ TAG ?= dev
 
 # Allow overriding the imagePullPolicy
 PULL_POLICY ?= Always
+
+KUSTOMIZE_IMAGE = k8s.gcr.io/kustomize/kustomize:v3.8.7
 
 all: test manager
 
@@ -234,10 +229,11 @@ endif
 ## --------------------------------------
 
 set_controller_image:
-	cd config/manager && $(KUSTOMIZE) edit set image controller=${CONTROLLER_IMG}
+	cd config/manager && kustomize edit set image controller=${CONTROLLER_IMG} > infrastructure-components.yaml
 
-create-infrastructure-components: generate-manifests $(KUSTOMIZE) set_controller_image
-	$(KUSTOMIZE) build config/default > infrastructure-components.yaml
+create-infrastructure-components: generate-manifests set_controller_image
+	kustomize build config/default > infrastructure-components.yaml
+
 
 ## --------------------------------------
 ## Cleanup / Verification

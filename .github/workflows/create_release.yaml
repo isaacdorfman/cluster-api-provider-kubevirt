@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.16.6'
+      - name: Install kustomize
+        run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
       - name: Create infrastructure components
         run: |
           make create-infrastructure-components
