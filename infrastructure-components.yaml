@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
     control-plane: controller-manager
   name: capk-system
 ---
@@ -14,9 +15,7 @@ metadata:
   creationTimestamp: null
   labels:
     cluster.x-k8s.io/provider: kubevirt
-    cluster.x-k8s.io/v1alpha3: v1alpha1
-    cluster.x-k8s.io/v1alpha4: v1alpha1
-    cluster.x-k8s.io/v1beta1: v1alpha1
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: kubevirtclusters.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -206,9 +205,7 @@ metadata:
   creationTimestamp: null
   labels:
     cluster.x-k8s.io/provider: kubevirt
-    cluster.x-k8s.io/v1alpha3: v1alpha1
-    cluster.x-k8s.io/v1alpha4: v1alpha1
-    cluster.x-k8s.io/v1beta1: v1alpha1
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: kubevirtmachines.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -2571,9 +2568,7 @@ metadata:
   creationTimestamp: null
   labels:
     cluster.x-k8s.io/provider: kubevirt
-    cluster.x-k8s.io/v1alpha3: v1alpha1
-    cluster.x-k8s.io/v1alpha4: v1alpha1
-    cluster.x-k8s.io/v1beta1: v1alpha1
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: kubevirtmachinetemplates.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -4884,6 +4879,7 @@ kind: ServiceAccount
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-manager
   namespace: capk-system
 ---
@@ -4892,6 +4888,7 @@ kind: Role
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-leader-election-role
   namespace: capk-system
 rules:
@@ -4940,6 +4937,7 @@ metadata:
   creationTimestamp: null
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-manager-role
 rules:
 - apiGroups:
@@ -5041,6 +5039,7 @@ kind: ClusterRole
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-proxy-role
 rules:
 - apiGroups:
@@ -5061,6 +5060,7 @@ kind: RoleBinding
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-leader-election-rolebinding
   namespace: capk-system
 roleRef:
@@ -5077,6 +5077,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -5092,6 +5093,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -5111,6 +5113,7 @@ metadata:
     prometheus.io/scrape: "true"
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
     control-plane: controller-manager
   name: capk-controller-manager-metrics-service
   namespace: capk-system
@@ -5121,6 +5124,7 @@ spec:
     targetPort: https
   selector:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
     control-plane: controller-manager
 ---
 apiVersion: v1
@@ -5128,6 +5132,7 @@ kind: Service
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-webhook-service
   namespace: capk-system
 spec:
@@ -5136,6 +5141,7 @@ spec:
     targetPort: 9443
   selector:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
     control-plane: controller-manager
 ---
 apiVersion: apps/v1
@@ -5143,6 +5149,7 @@ kind: Deployment
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
     control-plane: controller-manager
   name: capk-controller-manager
   namespace: capk-system
@@ -5151,11 +5158,13 @@ spec:
   selector:
     matchLabels:
       cluster.x-k8s.io/provider: kubevirt
+      cluster.x-k8s.io/v1beta1: v1beta1
       control-plane: controller-manager
   template:
     metadata:
       labels:
         cluster.x-k8s.io/provider: kubevirt
+        cluster.x-k8s.io/v1beta1: v1beta1
         control-plane: controller-manager
     spec:
       containers:
@@ -5223,6 +5232,7 @@ kind: Certificate
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-serving-cert
   namespace: capk-system
 spec:
@@ -5239,6 +5249,7 @@ kind: Issuer
 metadata:
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-selfsigned-issuer
   namespace: capk-system
 spec:
@@ -5251,6 +5262,7 @@ metadata:
     cert-manager.io/inject-ca-from: capk-system/capk-serving-cert
   labels:
     cluster.x-k8s.io/provider: kubevirt
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: capk-validating-webhook-configuration
 webhooks:
 - admissionReviewVersions:
