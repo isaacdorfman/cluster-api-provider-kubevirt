@@ -20,6 +20,7 @@ require (
 	sigs.k8s.io/cluster-api v0.3.11-0.20210525210043-6c7878e7b4a9
 	sigs.k8s.io/controller-runtime v0.11.0-beta.0.0.20211110210527-619e6b92dab9
 	sigs.k8s.io/kind v0.11.0
+	sigs.k8s.io/yaml v1.3.0
 )
 
 require (
@@ -73,7 +74,6 @@ require (
 	kubevirt.io/controller-lifecycle-operator-sdk v0.2.1 // indirect
 	sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
-	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
 replace (

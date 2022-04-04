@@ -107,7 +107,7 @@ var _ = Describe("CreateCluster", func() {
 				}
 			}
 			return nil
-		}, 5*time.Minute, 5*time.Second).Should(Succeed(), "kubevirt machines should have bootstrap succeeded condition")
+		}, 10*time.Minute, 5*time.Second).Should(Succeed(), "kubevirt machines should have bootstrap succeeded condition")
 
 	}
 
@@ -271,7 +271,7 @@ var _ = Describe("CreateCluster", func() {
 			}
 
 			return nil
-		}, 10*time.Minute, 5*time.Second).Should(Succeed(), "cluster should have control plane initialized")
+		}, 15*time.Minute, 5*time.Second).Should(Succeed(), "cluster should have control plane initialized")
 	}
 
 	injectKubevirtClusterExternallyManagedAnnotation := func(yamlStr string) string {
@@ -296,9 +296,9 @@ var _ = Describe("CreateCluster", func() {
 		By("generating cluster manifests from example template")
 		cmd := exec.Command(tests.ClusterctlPath, "generate", "cluster", "kvcluster", "--target-namespace", namespace, "--kubernetes-version", "v1.21.0", "--control-plane-machine-count=1", "--worker-machine-count=1", "--from", "templates/cluster-template.yaml")
 		cmd.Env = append(os.Environ(),
-			"NODE_VM_IMAGE_TEMPLATE=quay.io/kubevirtci/fedora-kubeadm:35",
+			"NODE_VM_IMAGE_TEMPLATE=quay.io/capk/ubuntu-container-disk:20.04",
 			"IMAGE_REPO=k8s.gcr.io",
-			"CRI_PATH=/var/run/crio/crio.sock",
+			"CRI_PATH=/var/run/containerd/containerd.sock",
 		)
 		stdout, _ := tests.RunCmd(cmd)
 		err := os.WriteFile(manifestsFile, stdout, 0644)
@@ -322,9 +322,9 @@ var _ = Describe("CreateCluster", func() {
 		By("generating cluster manifests from example template")
 		cmd := exec.Command(tests.ClusterctlPath, "generate", "cluster", "kvcluster", "--target-namespace", namespace, "--kubernetes-version", "v1.21.0", "--control-plane-machine-count=1", "--worker-machine-count=1", "--from", "templates/cluster-template.yaml")
 		cmd.Env = append(os.Environ(),
-			"NODE_VM_IMAGE_TEMPLATE=quay.io/kubevirtci/fedora-kubeadm:35",
+			"NODE_VM_IMAGE_TEMPLATE=quay.io/capk/ubuntu-container-disk:20.04",
 			"IMAGE_REPO=k8s.gcr.io",
-			"CRI_PATH=/var/run/crio/crio.sock",
+			"CRI_PATH=/var/run/containerd/containerd.sock",
 		)
 		stdout, _ := tests.RunCmd(cmd)
 
@@ -363,9 +363,9 @@ var _ = Describe("CreateCluster", func() {
 		By("generating cluster manifests from example template")
 		cmd := exec.Command(tests.ClusterctlPath, "generate", "cluster", "kvcluster", "--target-namespace", namespace, "--kubernetes-version", "v1.21.0", "--control-plane-machine-count=1", "--worker-machine-count=1", "--from", "templates/cluster-template-persistent-storage.yaml")
 		cmd.Env = append(os.Environ(),
-			"NODE_VM_IMAGE_TEMPLATE=quay.io/kubevirtci/fedora-kubeadm:35",
+			"NODE_VM_IMAGE_TEMPLATE=quay.io/capk/ubuntu-container-disk:20.04",
 			"IMAGE_REPO=k8s.gcr.io",
-			"CRI_PATH=/var/run/crio/crio.sock",
+			"CRI_PATH=/var/run/containerd/containerd.sock",
 		)
 		stdout, _ := tests.RunCmd(cmd)
 		err := os.WriteFile(manifestsFile, stdout, 0644)
