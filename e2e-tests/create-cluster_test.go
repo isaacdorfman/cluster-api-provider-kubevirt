@@ -366,6 +366,8 @@ var _ = Describe("CreateCluster", func() {
 			"NODE_VM_IMAGE_TEMPLATE=quay.io/capk/ubuntu-container-disk:20.04",
 			"IMAGE_REPO=k8s.gcr.io",
 			"CRI_PATH=/var/run/containerd/containerd.sock",
+			"ROOT_VOLUME_SIZE=23Gi",
+			"STORAGE_CLASS_NAME=rook-ceph-block",
 		)
 		stdout, _ := tests.RunCmd(cmd)
 		err := os.WriteFile(manifestsFile, stdout, 0644)
