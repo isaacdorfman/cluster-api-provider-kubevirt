@@ -14,16 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package kubevirt
+package main
 
 import (
-	"testing"
+	"context"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"sigs.k8s.io/cluster-api-provider-kubevirt/clusterkubevirtadm/cmd"
 )
 
-func TestKubevirt(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Kubevirt Suite")
+func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT)
+	go func() {
+		<-sigs
+		fmt.Fprintln(os.Stderr, "\nAborted...")
+		cancel()
+	}()
+
+	rootCmd := cmd.NewRootCmd()
+
+	if err := rootCmd.ExecuteContext(ctx); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
 }

@@ -1,4 +1,4 @@
-package v1alpha1_test
+package credentials
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestApi(t *testing.T) {
+func TestCredentialsSuite(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "API Suite")
+	RunSpecs(t, "Credentials Suite")
 }

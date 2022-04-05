@@ -14,16 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package kubevirt
+package main
 
-import (
-	"testing"
+/*
+The clusterkubevirtadm application creates a ServiceAccount in the Infrastructure cluster to be used for all the
+resources' creation.
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-)
+It will also create a Role, bound to this ServiceAccount, include minimal permissions required for the resources'
+creation.
 
-func TestKubevirt(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Kubevirt Suite")
-}
+The output of this application is the credentials file (kubeconfig) for using the new service account.
+
+This utility, allows the infrastructure admin create special credentials for each tenant cluster creation.
+*/

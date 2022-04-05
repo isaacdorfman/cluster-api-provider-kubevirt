@@ -14,16 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package kubevirt
+package create
 
 import (
-	"testing"
+	"github.com/spf13/cobra"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"sigs.k8s.io/cluster-api-provider-kubevirt/clusterkubevirtadm/cmd/credentials"
 )
 
-func TestKubevirt(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Kubevirt Suite")
+func NewCommand() *cobra.Command {
+	createCmd := &cobra.Command{
+		Use:          "create",
+		Short:        "Commands for creating cluster-api-provider-kubevirt related resources",
+		SilenceUsage: true,
+	}
+	createCmd.AddCommand(credentials.NewCreateCommand())
+
+	return createCmd
 }

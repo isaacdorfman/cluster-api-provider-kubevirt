@@ -14,16 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package kubevirt
+package get
 
 import (
-	"testing"
+	"github.com/spf13/cobra"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"sigs.k8s.io/cluster-api-provider-kubevirt/clusterkubevirtadm/cmd/get/kubeconfig"
 )
 
-func TestKubevirt(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Kubevirt Suite")
+func NewCommand() *cobra.Command {
+	createCmd := &cobra.Command{
+		Use:   "get",
+		Short: "Commands for retrieving cluster-api-provider-kubevirt related resources",
+	}
+	createCmd.AddCommand(kubeconfig.NewGetCommand())
+
+	return createCmd
 }
