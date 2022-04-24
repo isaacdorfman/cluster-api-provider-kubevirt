@@ -396,6 +396,9 @@ var _ = Describe("CreateCluster", func() {
 
 	It("creates a simple cluster with ephemeral VMs", Label("ephemeralVMs"), func() {
 		By("generating cluster manifests from example template")
+		println("###########")
+		println(os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"))
+		println("###########")
 		cmd := exec.Command(ClusterctlPath, "generate", "cluster", "kvcluster",
 			"--target-namespace", namespace,
 			"--kubernetes-version", os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"),
@@ -426,6 +429,9 @@ var _ = Describe("CreateCluster", func() {
 
 	It("should remediate a running VMI marked as being in a terminal state", Label("ephemeralVMs"), func() {
 		By("generating cluster manifests from example template")
+		println("###########")
+		println(os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"))
+		println("###########")
 		cmd := exec.Command(ClusterctlPath, "generate", "cluster", "kvcluster",
 			"--target-namespace", namespace,
 			"--kubernetes-version", os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"),
@@ -486,6 +492,9 @@ var _ = Describe("CreateCluster", func() {
 	It("should remediate failed unrecoverable VMI ", Label("ephemeralVMs"), func() {
 
 		By("generating cluster manifests from example template")
+		println("###########")
+		println(os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"))
+		println("###########")
 		cmd := exec.Command(ClusterctlPath, "generate", "cluster", "kvcluster",
 			"--target-namespace", namespace,
 			"--kubernetes-version", os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"),
@@ -560,6 +569,9 @@ var _ = Describe("CreateCluster", func() {
 
 	It("creates a simple externally managed cluster ephemeral VMs", Label("ephemeralVMs", "externallyManaged"), func() {
 		By("generating cluster manifests from example template")
+		println("###########")
+		println(os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"))
+		println("###########")
 		cmd := exec.Command(ClusterctlPath, "generate", "cluster", "kvcluster",
 			"--target-namespace", namespace,
 			"--kubernetes-version", os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"),
@@ -606,6 +618,9 @@ var _ = Describe("CreateCluster", func() {
 
 	It("creates a simple cluster with persistent VMs", Label("persistentVMs"), func() {
 		By("generating cluster manifests from example template")
+		println("###########")
+		println(os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"))
+		println("###########")
 		cmd := exec.Command(ClusterctlPath, "generate", "cluster", "kvcluster",
 			"--target-namespace", namespace,
 			"--kubernetes-version", os.Getenv("TENANT_CLUSTER_KUBERNETES_VERSION"),

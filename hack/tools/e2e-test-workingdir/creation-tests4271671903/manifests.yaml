@@ -1,0 +1,179 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: kvcluster
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 10.244.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: KubeadmControlPlane
+    name: kvcluster-control-plane
+    namespace: e2e-test-create-cluster-h4rmvb
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    kind: KubevirtCluster
+    name: kvcluster
+    namespace: e2e-test-create-cluster-h4rmvb
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtCluster
+metadata:
+  name: kvcluster
+  namespace: e2e-test-create-cluster-h4rmvb
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: kvcluster-control-plane
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  template:
+    spec:
+      virtualMachineTemplate:
+        metadata:
+          namespace: e2e-test-create-cluster-h4rmvb
+        spec:
+          dataVolumeTemplates:
+          - metadata:
+              name: kvcluster-boot-volume
+            spec:
+              pvc:
+                accessModes:
+                - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 23Gi
+                storageClassName: rook-ceph-block
+              source:
+                registry:
+                  url: docker://quay.io/capk/ubuntu-container-disk:20.04
+          runStrategy: Always
+          template:
+            spec:
+              domain:
+                cpu:
+                  cores: 2
+                devices:
+                  disks:
+                  - disk:
+                      bus: virtio
+                    name: dv-volume
+                memory:
+                  guest: 4Gi
+              volumes:
+              - dataVolume:
+                  name: kvcluster-boot-volume
+                name: dv-volume
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: KubeadmControlPlane
+metadata:
+  name: kvcluster-control-plane
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      imageRepository: k8s.gcr.io
+    initConfiguration:
+      nodeRegistration:
+        criSocket: /var/run/containerd/containerd.sock
+    joinConfiguration:
+      nodeRegistration:
+        criSocket: '{CRI_PATH}'
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+      kind: KubevirtMachineTemplate
+      name: kvcluster-control-plane
+      namespace: e2e-test-create-cluster-h4rmvb
+  replicas: 1
+  version: v1.21.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: kvcluster-md-0
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  template:
+    spec:
+      virtualMachineTemplate:
+        metadata:
+          namespace: e2e-test-create-cluster-h4rmvb
+        spec:
+          dataVolumeTemplates:
+          - metadata:
+              name: kvcluster-boot-volume
+            spec:
+              pvc:
+                accessModes:
+                - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 23Gi
+                storageClassName: rook-ceph-block
+              source:
+                registry:
+                  url: docker://quay.io/capk/ubuntu-container-disk:20.04
+          runStrategy: Always
+          template:
+            spec:
+              domain:
+                cpu:
+                  cores: 2
+                devices:
+                  disks:
+                  - disk:
+                      bus: virtio
+                    name: dv-volume
+                memory:
+                  guest: 4Gi
+              volumes:
+              - dataVolume:
+                  name: kvcluster-boot-volume
+                name: dv-volume
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: kvcluster-md-0
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs: {}
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: kvcluster-md-0
+  namespace: e2e-test-create-cluster-h4rmvb
+spec:
+  clusterName: kvcluster
+  replicas: 1
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: KubeadmConfigTemplate
+          name: kvcluster-md-0
+          namespace: e2e-test-create-cluster-h4rmvb
+      clusterName: kvcluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+        kind: KubevirtMachineTemplate
+        name: kvcluster-md-0
+        namespace: e2e-test-create-cluster-h4rmvb
+      version: v1.21.0
