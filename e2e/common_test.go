@@ -46,6 +46,11 @@ func RunCmd(cmd *exec.Cmd) (stdoutBytes []byte, stderrBytes []byte) {
 
 	// run the command
 	err := cmd.Run()
+	if err != nil {
+		println(stdout.String())
+		println("#############")
+		println(stderr.String())
+	}
 	Expect(err).To(BeNil())
 
 	return stdout.Bytes(), stderr.Bytes()
