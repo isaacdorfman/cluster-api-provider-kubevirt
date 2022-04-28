@@ -259,7 +259,7 @@ var _ = Describe("CreateCluster", func() {
 			}
 
 			return nil
-		}, 10*time.Minute, 5*time.Second).Should(Succeed(), "cluster should have control plane initialized")
+		}, 20*time.Minute, 5*time.Second).Should(Succeed(), "cluster should have control plane initialized")
 
 		By("Waiting on cluster's control plane to be ready")
 		Eventually(func() error {
@@ -428,6 +428,11 @@ var _ = Describe("CreateCluster", func() {
 			"--control-plane-machine-count=1",
 			"--worker-machine-count=1",
 			"--from", "templates/cluster-template.yaml")
+		cmd.Env = append(os.Environ(),
+			"NODE_VM_IMAGE_TEMPLATE=quay.io/capk/ubuntu-container-disk:20.04",
+			"IMAGE_REPO=k8s.gcr.io",
+			"CRI_PATH=/var/run/containerd/containerd.sock",
+		)
 		stdout, _ := RunCmd(cmd)
 		err := os.WriteFile(manifestsFile, stdout, 0644)
 		Expect(err).ToNot(HaveOccurred())
