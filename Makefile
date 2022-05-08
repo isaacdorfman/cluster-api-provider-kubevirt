@@ -247,7 +247,7 @@ endif
 ## --------------------------------------
 ##> infrastructure-components.yaml
 set_controller_image:
-	cd config/manager && kustomize edit set image controller=${CONTROLLER_IMG} 
+	cd config/manager && kustomize edit set image controller=${CONTROLLER_IMG}:${TAG} 
 
 create-infrastructure-components: generate-manifests set_controller_image
 	kustomize build config/default > infrastructure-components.yaml
