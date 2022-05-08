@@ -8,6 +8,7 @@ name: Upload Release Asset
 jobs:
   build:
     name: Upload Release Asset
+    needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
