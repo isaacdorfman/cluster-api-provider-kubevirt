@@ -16,7 +16,7 @@ jobs:
         env:
           QUAY_TOKEN: ${{secrets.QUAY_TOKEN}}
           REGISTRY: "quay.io/capk"
-          TAG: ${{ github.ref }}
+          TAG: ${GITHUB_REF##*/}
         run: |
           echo $QUAY_TOKEN | docker login -u="capk+capk_robot" quay.io --password-stdin
           make docker-build
@@ -37,7 +37,7 @@ jobs:
       - name: Create infrastructure components
         env:
           REGISTRY: "quay.io/capk"
-          TAG: ${{ github.ref }}
+          TAG: ${GITHUB_REF##*/}
         run: |
           make create-infrastructure-components
       - name: Create Release
