@@ -37,6 +37,7 @@ jobs:
       - name: Create infrastructure components
         env:
           REGISTRY: "quay.io/capk"
+          IMAGE_NAME: "capk-manager-amd64"
           TAG: ${{ github.ref_name }}
         run: |
           make create-infrastructure-components
